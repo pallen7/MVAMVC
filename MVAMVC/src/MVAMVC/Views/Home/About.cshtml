@@ -1,0 +1,30 @@
+﻿@model Person
+
+@{
+    ViewData["Title"] = "About";
+}
+<h2>@ViewData["Title"].</h2>
+<h3>@ViewData["Message"]</h3>
+
+<ul>
+    <li>First: @Model.first_name</li>
+    <li>First: @Model.surname</li>
+    <li>First: @Model.birthdate.ToLongDateString()</li>
+</ul>
+
+<form asp-controller="Home" asp-action="About" method="post">
+    <div class="form-group">
+        <label for="firstname">First: </label>
+        <input class="form-control" type="text" id="firstname" name="first_name" />
+    </div>
+    <div class="form-group">
+        <label for="surname">Last: </label>
+        <input class="form-control" type="text" id="surname" name="surname" />
+    </div>
+    <div class="form-group">
+        <label for="dob">DOB: </label>
+        <input class="form-control" type="text" id="dob" name="birthdate" />
+    </div>
+
+    <button class="btn btn-default" type="submit">Submit</button>
+</form>
