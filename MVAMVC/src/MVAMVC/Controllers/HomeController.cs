@@ -1,11 +1,19 @@
 ﻿using System;
 using Microsoft.AspNet.Mvc;
 using MVAMVC.Models;
+using Microsoft.Extensions.OptionsModel;
+using MVAMVC.Configuration;
 
 namespace MVAMVC.Controllers
 {
     public class HomeController : Controller
     {
+        // Use IOptions to access our options that we configured in startup.cs
+        public HomeController(IOptions<Options> options)
+        {
+            var name = options.Value.first_name;
+        }
+    
         public IActionResult Index()
         {
             return View();

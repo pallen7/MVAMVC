@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Builder;
+﻿using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MVAMVC.Configuration;
+
 
 namespace MVAMVC
 {
@@ -17,7 +15,15 @@ namespace MVAMVC
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)      // Optionally load environment files based on environment. New String c#6 format
                 .AddEnvironmentVariables();
+
+            if (env.IsDevelopment())
+            {
+                // Can't resolve this dependency? This is stored in the user profile so not suitable for production
+                //builder.AddUserSecrets()
+            }
+
             Configuration = builder.Build();
         }
 
@@ -28,6 +34,11 @@ namespace MVAMVC
         {
             // Add framework services.
             services.AddMvc();
+            var colour = Configuration.Get<string>("colour"); // Based on the key in the appsettings configuration file
+
+            // You can configure the services then they can be used anywhere throughout the application
+            services.Configure<Options>(Configuration);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
